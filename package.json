@@ -4,7 +4,7 @@
   "description": "",
   "main": "envelope.js",
   "scripts": {
-    "start": "nodemon s3",
+    "start": "node s3",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
