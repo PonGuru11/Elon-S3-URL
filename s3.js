@@ -48,29 +48,28 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const app = express();
 const port = 5000;
-
-
 const cors = require('cors');
+const dotenv = require('dotenv')
 
-app.use(express.json());
 app.use(cors());
+dotenv.config();
 
 app.use(bodyParser.json());
 
 // Set up AWS S3 client
 const s3 = new AWS.S3({
-    accessKeyId: "AKIAXWEQD3QLRVOKH5WF",
-          secretAccessKey: "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",
+  accessKeyId: process.env.accessKeyId,
+  secretAccessKey: process.env.secretAccessKey,
 });
 
 
 app.post('/upload', upload.single('file'), (req, res) => {
   const { filename, mimetype, path } = req.file;
-  const bucketName = 'e-sign1';
+  const bucketName = process.env.bName;
 
   // Upload the file to S3 bucket
   const uploadParams = {
-    Bucket: bucketName,
+    Bucket: process.env.bName,
     Key: filename,
     Body: fs.createReadStream(path),
     ContentType: mimetype
@@ -103,3 +102,5 @@ app.post('/upload', upload.single('file'), (req, res) => {
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`)
   });
+
+  app.use('/',(req,res) => res.send("Welcome to get the S3 bucket Url..."))
